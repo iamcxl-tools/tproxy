@@ -1,0 +1,5 @@
+- restart sys calls after EINTR
+- edge triggered epoll
+- ipv6
+- restart listener if failed without proxy restart
+
