@@ -118,6 +118,7 @@ void io_loop_run(void)
 		}
 	}
 
+	sp_free(events);
 	close(efd);
 	efd = -1;
 
