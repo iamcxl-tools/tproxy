@@ -6,7 +6,7 @@
 #include "crc.h"
 #include "sp.h"
 
-#define INITIAL_SIZE (256)
+#define INITIAL_SIZE (2048)
 #define MAX_CHAIN_LENGTH (8)
 
 /**
