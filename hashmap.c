@@ -135,8 +135,10 @@ static int __rehash(map_t* in)
 			continue;
 
 		int status = hashmap_put(m, curr[i].key, curr[i].data);
-		if(status != MAP_OK)
+		if(status != MAP_OK) {
+			sp_free(curr);
 			return status;
+		}
       
 		sp_free(curr[i].data);
 		sp_free(curr[i].key);
