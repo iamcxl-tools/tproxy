@@ -323,6 +323,15 @@ static int context_flush_queue(ctx_t *ctx)
 	return 0;
 }
 
+static void adjust_io(bridge_t *br, ctx_t *cli_ctx, ctx_t *srv_ctx)
+{
+	if (queue_is_full(br->cli.queue)) bridge_mod_io(srv_ctx, SRV_IO, READ_IO, DISABLE_IO);
+	else                              bridge_mod_io(srv_ctx, SRV_IO, READ_IO, ENABLE_IO);
+
+	if (queue_is_full(br->srv.queue)) bridge_mod_io(cli_ctx, CLI_IO, READ_IO, DISABLE_IO);
+	else                              bridge_mod_io(cli_ctx, CLI_IO, READ_IO, ENABLE_IO);
+}
+
 static void handle_io_bridge_active(uint32_t events, ctx_t *ctx)
 {
 	ssize_t n    = 0;
@@ -384,15 +393,7 @@ static void handle_io_bridge_active(uint32_t events, ctx_t *ctx)
 					 (queue_is_full(bridge->cli.queue)) ? "FULL" : "NOT FULL",
 					 (queue_is_full(bridge->cli.queue)) ? "FULL" : "NOT FULL");
 
-	if (queue_is_full(bridge->cli.queue))
-		bridge_mod_io(srv_ctx, SRV_IO, READ_IO, DISABLE_IO);
-	else
-		bridge_mod_io(srv_ctx, SRV_IO, READ_IO, ENABLE_IO);
-
-	if (queue_is_full(bridge->srv.queue))
-		bridge_mod_io(srv_ctx, CLI_IO, READ_IO, DISABLE_IO);
-	else
-		bridge_mod_io(srv_ctx, CLI_IO, READ_IO, ENABLE_IO);
+	adjust_io(bridge, cli_ctx, srv_ctx);
 
 	if (eof) {
 		// both queues are empty, safe to shutdown
