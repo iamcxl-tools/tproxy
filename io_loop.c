@@ -28,18 +28,18 @@ int io_loop_init(io_cb_fn io_handler,io_cb_fn timer_handler, int timeout)
 
 	do {
 		if (!io_handler || !timer_handler) {
-			LOGGER( "handlers are not set\n");
+			LOGGER_DBG( "handlers are not set\n");
 			break;
 		}
 
 		if (efd >= 0) {
-			LOGGER( "io_loop has been already initialized\n");
+			LOGGER_DBG( "io_loop has been already initialized\n");
 			break;
 		}
 
 		efd = epoll_create1(0);
 		if (efd < 0) {
-			LOGGER( "epoll_create1() error: %s\n", strerror(errno));
+			LOGGER_DBG( "epoll_create1() error: %s\n", strerror(errno));
 			break;
 		}
 
@@ -62,7 +62,7 @@ int io_mod_sock(int fd, uint32_t events, void *data)
 	struct epoll_event event;
 	int rc = -1;
 
-	LOGGER( "__io_mod_sock: fd {%d} events {%s} {%s}\n", fd,
+	LOGGER_DBG( "__io_mod_sock: fd {%d} events {%s} {%s}\n", fd,
 	                (events & EPOLLIN)  ? "POLLIN"  : "-",
 	                (events & EPOLLOUT) ? "POLLOUT" : "-");
 
@@ -83,7 +83,7 @@ int io_mod_sock(int fd, uint32_t events, void *data)
 
 int io_del_sock(int fd)
 {
-	LOGGER( "io_del_sock: fd {%d}\n", fd);
+	LOGGER_DBG( "io_del_sock: fd {%d}\n", fd);
 
 	return epoll_ctl(efd, EPOLL_CTL_DEL, fd, NULL);
 }
@@ -107,7 +107,7 @@ void io_loop_run(void)
 			continue;
 
 		if (n < 0) {
-			LOGGER( "epoll_wait failed: %s\n", strerror(errno));
+			LOGGER_DBG( "epoll_wait failed: %s\n", strerror(errno));
 			break;
 		}
 

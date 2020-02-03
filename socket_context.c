@@ -14,7 +14,7 @@ static void __ctx_destroy(void *ptr)
 {
 	ctx_t *obj = (ctx_t*)ptr;
 
-	LOGGER( "__destroy_ctx(%p)\n", ptr);
+	LOGGER_DBG( "__destroy_ctx(%p)\n", ptr);
 
 	if (!obj)
 		return;
@@ -51,7 +51,7 @@ ctx_t *context_create(int fd, ctx_type_t type, void *data, destroy_cb cb)
 		return rc;
 	} while(0);
 
-	LOGGER( "failed to create context fd {%d} type {%s}\n", fd, type_str[type]);
+	LOGGER_DBG( "failed to create context fd {%d} type {%s}\n", fd, type_str[type]);
 
 	return NULL;
 }

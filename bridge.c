@@ -22,7 +22,7 @@ static void __bridge_destroy(void *ptr)
 {
 	bridge_t *obj = (bridge_t*)ptr;
 
-	LOGGER( "__bridge_destroy(%p)\n", ptr);
+	LOGGER_DBG( "__bridge_destroy(%p)\n", ptr);
 
 	if (!obj)
 		return;
@@ -92,7 +92,7 @@ bridge_t *bridge_create(int cli_fd)
 
 		bridge_set_state(rc, BRIDGE_NEW);
 
-		LOGGER("New bridge {%p} {{%d <-> %p} <-> {%p <-> %d}}  {%s:%d <-> %s:%d}\n", rc,
+		LOGGER_DBG("New bridge {%p} {{%d <-> %p} <-> {%p <-> %d}}  {%s:%d <-> %s:%d}\n", rc,
 				rc->cli.fd, rc->cli.queue, rc->srv.queue, rc->srv.fd,
 		        cli_addr_buf, ntohs(cli_addr.sin_port),
 		        srv_addr_buf, ntohs(srv_addr.sin_port));
@@ -103,7 +103,7 @@ bridge_t *bridge_create(int cli_fd)
 	if (rc)
 		sp_free(rc);
 
-	LOGGER( "failed to create bridge for fd {%d}\n", cli_fd);
+	LOGGER_DBG( "failed to create bridge for fd {%d}\n", cli_fd);
 
 	return NULL;
 }

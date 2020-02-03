@@ -20,7 +20,7 @@ static void __queue_destroy(void *ptr)
 	if (!queue)
 		return;
 
-	LOGGER( "%s: %p\n", __FUNCTION__, queue);
+	LOGGER_DBG( "%s: %p\n", __FUNCTION__, queue);
 
 	while (!queue_del_first(queue))
 		;
@@ -32,7 +32,7 @@ static void __queue_node_destroy(void *ptr)
 	if (!node)
 		return;
 
-	LOGGER( "%s: %p\n", __FUNCTION__, node);
+	LOGGER_DBG( "%s: %p\n", __FUNCTION__, node);
 
 	sp_free(node->buf);
 }
@@ -92,7 +92,7 @@ int queue_enqueue(send_queue_t *this, char *buf, size_t len)
 	if (rc && node)
 		sp_free(node);
 
-	LOGGER( "___%s: this {%p} len {%d}, result {%s}\n", __FUNCTION__, this, len, (rc)?"error":"ok");
+	LOGGER_DBG( "___%s: this {%p} len {%d}, result {%s}\n", __FUNCTION__, this, len, (rc)?"error":"ok");
 
 	return rc;
 }
@@ -109,7 +109,7 @@ int queue_is_empty(send_queue_t *this)
 			rc++;
 	} while(0);
 
-	LOGGER( "___%s: this {%p}, result {%s}\n", __FUNCTION__, this, (rc)?"empty":"not empty");
+	LOGGER_DBG( "___%s: this {%p}, result {%s}\n", __FUNCTION__, this, (rc)?"empty":"not empty");
 
 	return rc;
 }
@@ -125,7 +125,7 @@ int queue_is_full(send_queue_t *this)
 		rc = (this->size >= this->max_size);
 	} while(0);
 
-	LOGGER( "___%s: this {%p}, result {%s}\n", __FUNCTION__, this, (rc)?"full":"not full");
+	LOGGER_DBG( "___%s: this {%p}, result {%s}\n", __FUNCTION__, this, (rc)?"full":"not full");
 
 	return rc;
 }
@@ -134,14 +134,14 @@ send_queue_node_t * queue_get_first(send_queue_t *this)
 {
 	send_queue_node_t *node = NULL;
 
-	LOGGER( "___%s: this\n", __FUNCTION__, this);
+	LOGGER_DBG( "___%s: this\n", __FUNCTION__, this);
 
 	if (!this)
 		return NULL;
 
 	node = sp_dup(TAILQ_FIRST(&this->head));
 
-	LOGGER( "___%s: this {%p}, result {%p}\n", __FUNCTION__, this, node);
+	LOGGER_DBG( "___%s: this {%p}, result {%p}\n", __FUNCTION__, this, node);
 
 	return node;
 }
@@ -150,7 +150,7 @@ int queue_del_first(send_queue_t *this)
 {
 	int rc = -1;
 
-	LOGGER( "___%s: this {%p}\n", __FUNCTION__, this);
+	LOGGER_DBG( "___%s: this {%p}\n", __FUNCTION__, this);
 
 	do {
 		if (!this)
