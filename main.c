@@ -18,6 +18,7 @@
 #include <arpa/inet.h>
 #include <sys/epoll.h>
 #include <errno.h>
+#include <signal.h>
 
 #include "logger.h"
 #include "sp.h"
@@ -573,6 +574,8 @@ int main(int ac, char **av)
 	listener_t *listener = NULL;
 	ctx_t      *listen_context = NULL;
 	int rc = -1;
+
+	signal(SIGPIPE, SIG_IGN);
 
 	do {
 		map_active = hashmap_new();
